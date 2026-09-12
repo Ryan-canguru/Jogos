@@ -83,7 +83,7 @@ metadata/_edit_group_ = true
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=702190306]
 position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_2fabq")
-animation = &"idle"
+animation = &"jump"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=431262659]
 position = Vector2(0, -1)
