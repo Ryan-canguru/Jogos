@@ -1,9 +1,14 @@
 [gd_scene format=3 uid="uid://wlfvupls10ws"]
 
 [ext_resource type="Script" uid="uid://brmekd1w0a1ar" path="res://player.gd" id="1_sweqy"]
+[ext_resource type="Texture2D" uid="uid://8gtrcwf6fd70" path="res://objetos/Sprite Pack 2/2 - Mr. Mochi/Hurt (32 x 32).png" id="2_sweqy"]
 [ext_resource type="Texture2D" uid="uid://qb5c5u6i6jy" path="res://objetos/Sprite Pack 2/2 - Mr. Mochi/Idle (32 x 32).png" id="3_1jxqw"]
 [ext_resource type="Texture2D" uid="uid://coy8bjx3y6esa" path="res://objetos/Sprite Pack 2/2 - Mr. Mochi/Jumping (32 x 32).png" id="4_dw050"]
 [ext_resource type="Texture2D" uid="uid://b05kwxtoikily" path="res://objetos/Sprite Pack 2/2 - Mr. Mochi/Running (32 x 32).png" id="5_b26j0"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2hs0m"]
+atlas = ExtResource("2_sweqy")
+region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5sqpf"]
 atlas = ExtResource("3_1jxqw")
@@ -35,6 +40,14 @@ region = Rect2(96, 0, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_2fabq"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2hs0m")
+}],
+"loop": 1,
+"name": &"hunt",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_5sqpf")
@@ -73,20 +86,33 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2fabq"]
-radius = 8.0
-height = 20.0
+radius = 6.0
+height = 16.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2fabq"]
+size = Vector2(12.5, 14)
 
 [node name="player" type="CharacterBody2D" unique_id=2033159037]
+texture_filter = 1
+position = Vector2(2, 1)
 script = ExtResource("1_sweqy")
-metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=702190306]
 position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_2fabq")
-animation = &"jump"
+animation = &"hunt"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=431262659]
 position = Vector2(0, -1)
 shape = SubResource("CapsuleShape2D_2fabq")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1851389888]
+
+[node name="hitbox" type="Area2D" parent="." unique_id=1841076445]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox" unique_id=1575277400]
+position = Vector2(0.25, -1)
+shape = SubResource("RectangleShape2D_2fabq")
+debug_color = Color(0.85638756, 0.36690974, 1.92523e-07, 0.41960785)
+
+[connection signal="area_entered" from="hitbox" to="." method="_on_hitbox_area_entered"]

@@ -1,0 +1,97 @@
+[gd_scene format=3 uid="uid://drmb1606pue3p"]
+
+[ext_resource type="Texture2D" uid="uid://14aot63vpxm8" path="res://objetos/Sprite Pack 2/4 - Robo Pumpkin/Hurt (16 x 16).png" id="1_0b8xr"]
+[ext_resource type="Texture2D" uid="uid://car8yqujmcf1f" path="res://objetos/Sprite Pack 2/4 - Robo Pumpkin/Walking (16 x 16).png" id="2_g45jm"]
+
+[sub_resource type="GDScript" id="GDScript_0b8xr"]
+script/source = "extends CharacterBody2D
+
+const SPEED =  700.0
+var direction = -1
+@onready var vaie_volta = $VaieVolta as RayCast2D 
+
+
+
+func _physics_process(delta: float) -> void:
+	
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+
+	if vaie_volta.is_colliding():
+		direction *= -1
+		vaie_volta.scale.x *= -1
+		
+	$animacao.scale.x = direction
+	
+	velocity.x = direction * SPEED * delta
+	
+
+	move_and_slide()
+"
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_030df"]
+radius = 7.0
+height = 14.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l0fh3"]
+atlas = ExtResource("2_g45jm")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o83ti"]
+atlas = ExtResource("2_g45jm")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_enrbn"]
+atlas = ExtResource("1_0b8xr")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1su0k"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l0fh3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o83ti")
+}],
+"loop": 1,
+"name": &"correr",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_enrbn")
+}],
+"loop": 0,
+"name": &"morte",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2fabq"]
+radius = 6.0
+height = 12.0
+
+[node name="Inimigo" type="CharacterBody2D" unique_id=735190701]
+texture_filter = 1
+script = SubResource("GDScript_0b8xr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=359589070]
+light_mask = 4
+position = Vector2(0, 1)
+shape = SubResource("CapsuleShape2D_030df")
+
+[node name="VaieVolta" type="RayCast2D" parent="." unique_id=1530624621]
+target_position = Vector2(-11, 0)
+
+[node name="animacao" type="AnimatedSprite2D" parent="." unique_id=828385447]
+sprite_frames = SubResource("SpriteFrames_1su0k")
+animation = &"correr"
+autoplay = "correr"
+frame_progress = 0.8416345
+
+[node name="hitbox" type="Area2D" parent="." unique_id=458405862]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox" unique_id=1963319892]
+position = Vector2(0, -1)
+shape = SubResource("CapsuleShape2D_2fabq")
+debug_color = Color(0.6403725, 0.52510184, 0, 0.41960785)
